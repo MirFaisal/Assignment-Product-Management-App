@@ -1,7 +1,7 @@
 "use client";
 
 import { useSelector } from "react-redux";
-import DashboardLayout from "@/app/components/DashboardLayout";
+import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
 
 export default function DashboardPage() {
   const { email, token } = useSelector((state) => state.auth);

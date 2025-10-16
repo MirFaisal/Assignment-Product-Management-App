@@ -2,7 +2,7 @@
 
 import { Provider } from "react-redux";
 import { store } from "./store";
-import AuthProvider from "@/app/components/AuthProvider";
+import AuthProvider from "@/app/components/utils/AuthProvider";
 
 export default function ReduxProvider({ children }) {
   return (

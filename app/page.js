@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import LoadingSpinner from "./components/LoadingSpinner";
+import LoadingSpinner from "./components/svgs/LoadingSpinner";
 
 export default function Home() {
   const router = useRouter();

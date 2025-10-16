@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "./Sidebar";
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "../utils/ProtectedRoute";
 
 export default function DashboardLayout({ children }) {
   return (

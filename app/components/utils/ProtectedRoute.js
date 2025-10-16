@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "../svgs/LoadingSpinner";
 
 export default function ProtectedRoute({ children }) {
   const router = useRouter();

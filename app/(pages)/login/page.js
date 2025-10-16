@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { userVerify, clearError } from "@/app/store/slices/Auth/authSlice";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
+import LoadingSpinner from "@/app/components/svgs/LoadingSpinner";
 
 export default function LoginPage() {
   const dispatch = useDispatch();

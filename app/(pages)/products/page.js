@@ -1,4 +1,4 @@
-import DashboardLayout from "@/app/components/DashboardLayout";
+import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
 import React from "react";
 
 const page = () => {
