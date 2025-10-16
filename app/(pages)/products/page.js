@@ -11,7 +11,7 @@ import {
   setCategoryFilter,
   resetProducts,
 } from "@/app/store/slices/Product/productsSlice";
-import { fetchCategories } from "@/app/store/slices/Category/categoriesSlice";
+import { fetchCategories } from "@/app/store/slices/Category/categoriesAPI";
 import LoadingSpinner from "@/app/components/svgs/LoadingSpinner";
 import Link from "next/link";
 

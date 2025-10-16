@@ -3,11 +3,8 @@
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCategories,
-  searchCategories,
-  resetCategories,
-} from "@/app/store/slices/Category/categoriesSlice";
+import { fetchCategories, searchCategories } from "@/app/store/slices/Category/categoriesAPI";
+import { resetCategories } from "@/app/store/slices/Category/categoriesSlice";
 import LoadingSpinner from "@/app/components/svgs/LoadingSpinner";
 import Link from "next/link";
 
