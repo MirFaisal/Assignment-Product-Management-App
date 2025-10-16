@@ -22,7 +22,9 @@ const ProductForm = ({
 
   useEffect(() => {
     setFormData(initialData);
-  }, [initialData]);
+    // Only run on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
