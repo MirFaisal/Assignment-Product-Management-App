@@ -2,7 +2,12 @@
 
 import { Provider } from "react-redux";
 import { store } from "./store";
+import AuthProvider from "@/app/components/AuthProvider";
 
 export default function ReduxProvider({ children }) {
-  return <Provider store={store}>{children}</Provider>;
+  return (
+    <Provider store={store}>
+      <AuthProvider>{children}</AuthProvider>
+    </Provider>
+  );
 }
