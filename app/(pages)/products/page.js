@@ -1,8 +1,9 @@
 "use client";
 
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "next/navigation";
 import {
   fetchProducts,
   searchProducts,
@@ -16,6 +17,9 @@ import Link from "next/link";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
+  const categoryIdFromUrl = searchParams.get("categoryId");
+
   const { products, loading, error, pagination, filters } = useSelector((state) => state.products);
   const { categories } = useSelector((state) => state.categories);
   const { hydrated } = useSelector((state) => state.auth);
@@ -26,12 +30,19 @@ const ProductsPage = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
 
   useEffect(() => {
+    // Set category filter from URL if present
+    if (categoryIdFromUrl && categoryIdFromUrl !== filters.categoryId) {
+      dispatch(setCategoryFilter(categoryIdFromUrl));
+    }
+  }, [categoryIdFromUrl, dispatch]);
+
+  useEffect(() => {
     // Wait for auth to hydrate before making API calls
     if (hydrated) {
       dispatch(fetchProducts({ offset: 0, limit: 10, categoryId: filters.categoryId }));
-      dispatch(fetchCategories());
+      dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
-  }, [dispatch, hydrated]);
+  }, [dispatch, hydrated, filters.categoryId]);
 
   // Debounced search - call API after user stops typing
   useEffect(() => {
