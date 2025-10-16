@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
+import Modal from "@/app/components/common/Modal";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useRouter } from "next/navigation";
@@ -211,29 +212,27 @@ const ProductDetailPage = () => {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Confirm Delete</h2>
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to delete <span className="font-semibold">{selectedProduct?.name}</span>?
-              This action cannot be undone.
-            </p>
-            <div className="flex gap-3 justify-end">
-              <button
-                onClick={cancelDelete}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
-                Cancel
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        open={showDeleteModal}
+        title="Confirm Delete"
+        onClose={cancelDelete}
+        actions={[
+          <button
+            key="cancel"
+            onClick={cancelDelete}
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+            Cancel
+          </button>,
+          <button
+            key="delete"
+            onClick={confirmDelete}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+            Delete
+          </button>,
+        ]}>
+        Are you sure you want to delete <span className="font-semibold">{selectedProduct?.name}</span>?<br />
+        This action cannot be undone.
+      </Modal>
     </DashboardLayout>
   );
 };
