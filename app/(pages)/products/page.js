@@ -1,6 +1,10 @@
 "use client";
 
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
+import ProductCard from "@/app/components/common/ProductCard";
+import Header from "@/app/components/common/Header";
+import SearchInput from "@/app/components/common/SearchInput";
+import LoadMoreButton from "@/app/components/common/LoadMoreButton";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -137,43 +141,32 @@ const ProductsPage = () => {
     <DashboardLayout>
       <div className="p-6">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-semibold text-gray-800">Products</h1>
+        <Header title="Products">
           <Link
             href="/products/create"
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
             + Add Product
           </Link>
-        </div>
+        </Header>
 
         {/* Filters */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Search */}
-          <div>
-            <input
-              type="text"
-              placeholder="Search products by name..."
-              value={searchInput}
-              onChange={handleSearch}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+          <SearchInput value={searchInput} onChange={handleSearch} placeholder="Search products by name..." />
 
           {/* Category Filter */}
-          <div>
-            <select
-              value={categoryIdFromUrl || ""}
-              onChange={handleCategoryChange}
-              disabled={isChangingCategory}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed">
-              <option value="">All Categories</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={categoryIdFromUrl || ""}
+            onChange={handleCategoryChange}
+            disabled={isChangingCategory}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed">
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Error Message */}
@@ -198,57 +191,7 @@ const ProductsPage = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map((product) => (
-                  <div
-                    key={product.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                    {/* Product Image */}
-                    <div className="relative h-48 bg-gray-200">
-                      {product.images && product.images.length > 0 ? (
-                        <img
-                          src={product.images[0]}
-                          alt={product.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          No Image
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Product Info */}
-                    <div className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2 truncate">{product.name}</h3>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-xl font-bold text-blue-600">${product.price}</span>
-                        {product.category && (
-                          <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
-                            {product.category.name}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex gap-2">
-                        <Link
-                          href={`/products/${product.slug}`}
-                          className="flex-1 px-3 py-2 text-sm text-center bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors">
-                          View
-                        </Link>
-                        <Link
-                          href={`/products/${product.slug}/edit`}
-                          className="flex-1 px-3 py-2 text-sm text-center bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition-colors">
-                          Edit
-                        </Link>
-                        <button
-                          onClick={() => handleDeleteClick(product)}
-                          className="flex-1 px-3 py-2 text-sm bg-red-50 text-red-600 rounded hover:bg-red-100 transition-colors">
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  <ProductCard key={product.id} product={product} onDelete={handleDeleteClick} />
                 ))}
               </div>
             )}
@@ -256,19 +199,7 @@ const ProductsPage = () => {
             {/* Load More Button */}
             {pagination.hasMore && !searchInput.trim() && (
               <div className="flex justify-center mt-8">
-                <button
-                  onClick={handleLoadMore}
-                  disabled={loading}
-                  className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 disabled:bg-gray-400 transition-colors flex items-center gap-2">
-                  {loading ? (
-                    <>
-                      <LoadingSpinner size="sm" color="white" />
-                      Loading...
-                    </>
-                  ) : (
-                    "Load More"
-                  )}
-                </button>
+                <LoadMoreButton onClick={handleLoadMore} loading={loading} />
               </div>
             )}
           </>
