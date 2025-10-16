@@ -29,7 +29,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (hydrated) {
-      dispatch(fetchProducts({ offset: 0, limit: 50 })); 
+      dispatch(fetchProducts({ offset: 0, limit: 50 }));
       dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
   }, [dispatch, hydrated]);
