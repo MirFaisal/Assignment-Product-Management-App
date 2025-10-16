@@ -3,7 +3,7 @@
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   fetchProducts,
   searchProducts,
@@ -18,6 +18,7 @@ import Link from "next/link";
 const ProductsPage = () => {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const categoryIdFromUrl = searchParams.get("categoryId");
 
   const { products, loading, error, pagination, filters } = useSelector((state) => state.products);
@@ -28,21 +29,27 @@ const ProductsPage = () => {
   const [productToDelete, setProductToDelete] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
+  const [isChangingCategory, setIsChangingCategory] = useState(false);
 
+  // Load categories once when component mounts
   useEffect(() => {
-    // Set category filter from URL if present
-    if (categoryIdFromUrl && categoryIdFromUrl !== filters.categoryId) {
-      dispatch(setCategoryFilter(categoryIdFromUrl));
-    }
-  }, [categoryIdFromUrl, dispatch]);
-
-  useEffect(() => {
-    // Wait for auth to hydrate before making API calls
     if (hydrated) {
-      dispatch(fetchProducts({ offset: 0, limit: 10, categoryId: filters.categoryId }));
       dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
-  }, [dispatch, hydrated, filters.categoryId]);
+  }, [dispatch, hydrated]);
+
+  // Load products when URL category changes
+  useEffect(() => {
+    if (hydrated) {
+      const categoryId = categoryIdFromUrl;
+
+      // Set category filter from URL
+      dispatch(setCategoryFilter(categoryId));
+      dispatch(resetProducts());
+      dispatch(fetchProducts({ offset: 0, limit: 10, categoryId }));
+      setIsChangingCategory(false);
+    }
+  }, [dispatch, hydrated, categoryIdFromUrl]);
 
   // Debounced search - call API after user stops typing
   useEffect(() => {
@@ -60,7 +67,8 @@ const ProductsPage = () => {
     } else {
       // If search is cleared, reload products
       dispatch(resetProducts());
-      dispatch(fetchProducts({ offset: 0, limit: 10, categoryId: filters.categoryId }));
+      const categoryId = categoryIdFromUrl;
+      dispatch(fetchProducts({ offset: 0, limit: 10, categoryId }));
     }
 
     return () => {
@@ -76,19 +84,27 @@ const ProductsPage = () => {
 
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value || null;
-    dispatch(setCategoryFilter(categoryId));
-    dispatch(resetProducts());
+    setIsChangingCategory(true);
     setSearchInput(""); // Clear search when changing category
-    dispatch(fetchProducts({ offset: 0, limit: 10, categoryId }));
+
+    // Update the URL search params - this will trigger the useEffect above
+    const params = new URLSearchParams(window.location.search);
+    if (categoryId) {
+      params.set("categoryId", categoryId);
+    } else {
+      params.delete("categoryId");
+    }
+    router.replace(`/products${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
   const handleLoadMore = () => {
     const newOffset = pagination.offset + pagination.limit;
+    const categoryId = categoryIdFromUrl;
     dispatch(
       fetchProducts({
         offset: newOffset,
         limit: pagination.limit,
-        categoryId: filters.categoryId,
+        categoryId,
       }),
     );
   };
@@ -151,9 +167,10 @@ const ProductsPage = () => {
           {/* Category Filter */}
           <div>
             <select
-              value={filters.categoryId || ""}
+              value={categoryIdFromUrl || ""}
               onChange={handleCategoryChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              disabled={isChangingCategory}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed">
               <option value="">All Categories</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
@@ -170,7 +187,7 @@ const ProductsPage = () => {
         )}
 
         {/* Loading State */}
-        {loading && products.length === 0 ? (
+        {(loading && products.length === 0) || isChangingCategory ? (
           <div className="flex justify-center items-center py-20">
             <LoadingSpinner size="lg" />
           </div>
