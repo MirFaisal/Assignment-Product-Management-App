@@ -1,3 +1,5 @@
+import Skeleton from "./Skeleton";
+
 const colorMap = {
   blue: {
     bg: "bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200",
@@ -38,13 +40,18 @@ const colorMap = {
 
 export default function StatsCard({ title, value, color = "gray", icon, note }) {
   const colors = colorMap[color] || colorMap["gray"];
+  const isLoading = value === undefined || value === null || value === "...";
   return (
     <div className={`rounded-xl p-6 ${colors.bg}`}>
       <div className="flex items-center justify-between">
         <div>
           <p className={`text-sm font-medium ${colors.text}`}>{title}</p>
-          <p className={`text-3xl font-bold mt-1 ${colors.value}`}>{value}</p>
-          {note && <p className={`text-xs mt-2 ${colors.note}`}>{note}</p>}
+          {isLoading ? (
+            <Skeleton className="h-8 w-20 mt-1 mb-1" />
+          ) : (
+            <p className={`text-3xl font-bold mt-1 ${colors.value}`}>{value}</p>
+          )}
+          {note && !isLoading && <p className={`text-xs mt-2 ${colors.note}`}>{note}</p>}
         </div>
         <div className={`rounded-full p-3 ${colors.iconBg}`}>{icon}</div>
       </div>
