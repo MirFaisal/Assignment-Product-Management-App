@@ -22,10 +22,8 @@ const ProductDetailPage = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
-    // Clear previous product
     dispatch(clearSelectedProduct());
 
-    // Wait for auth to hydrate before making API calls
     if (hydrated && slug) {
       dispatch(fetchProductById(slug));
     }
@@ -47,7 +45,6 @@ const ProductDetailPage = () => {
     setShowDeleteModal(false);
   };
 
-  // Show loading while auth is hydrating
   if (!hydrated || loading) {
     return (
       <DashboardLayout>
@@ -58,7 +55,7 @@ const ProductDetailPage = () => {
     );
   }
 
-  // Show error
+
   if (error) {
     return (
       <DashboardLayout>
@@ -72,7 +69,6 @@ const ProductDetailPage = () => {
     );
   }
 
-  // Show not found
   if (!selectedProduct) {
     return (
       <DashboardLayout>

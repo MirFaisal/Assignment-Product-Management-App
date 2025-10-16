@@ -28,14 +28,12 @@ export default function DashboardPage() {
   const { categories, loading: categoriesLoading } = useSelector((state) => state.categories);
 
   useEffect(() => {
-    // Wait for auth to hydrate before making API calls
     if (hydrated) {
-      dispatch(fetchProducts({ offset: 0, limit: 50 })); // Fetch more to get accurate count
+      dispatch(fetchProducts({ offset: 0, limit: 50 })); 
       dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
   }, [dispatch, hydrated]);
 
-  // Calculate dashboard statistics
   const dashboardStats = useMemo(() => {
     const categoryStats = categories.reduce((acc, category) => {
       const productCount = products.filter((p) => p.category?.id === category.id).length;

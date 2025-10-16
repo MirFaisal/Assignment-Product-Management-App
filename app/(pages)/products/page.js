@@ -31,14 +31,12 @@ const ProductsPage = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [isChangingCategory, setIsChangingCategory] = useState(false);
 
-  // Load categories once when component mounts
   useEffect(() => {
     if (hydrated) {
       dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
   }, [dispatch, hydrated]);
 
-  // Load products when URL category changes
   useEffect(() => {
     if (hydrated) {
       const categoryId = categoryIdFromUrl;
@@ -51,9 +49,8 @@ const ProductsPage = () => {
     }
   }, [dispatch, hydrated, categoryIdFromUrl]);
 
-  // Debounced search - call API after user stops typing
   useEffect(() => {
-    if (!hydrated) return; // Don't search if not hydrated
+    if (!hydrated) return; 
 
     if (searchTimeout) {
       clearTimeout(searchTimeout);
@@ -62,10 +59,9 @@ const ProductsPage = () => {
     if (searchInput.trim()) {
       const timeout = setTimeout(() => {
         dispatch(searchProducts(searchInput.trim()));
-      }, 500); // Wait 500ms after user stops typing
+      }, 500); 
       setSearchTimeout(timeout);
     } else {
-      // If search is cleared, reload products
       dispatch(resetProducts());
       const categoryId = categoryIdFromUrl;
       dispatch(fetchProducts({ offset: 0, limit: 10, categoryId }));
@@ -85,9 +81,8 @@ const ProductsPage = () => {
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value || null;
     setIsChangingCategory(true);
-    setSearchInput(""); // Clear search when changing category
+    setSearchInput(""); 
 
-    // Update the URL search params - this will trigger the useEffect above
     const params = new URLSearchParams(window.location.search);
     if (categoryId) {
       params.set("categoryId", categoryId);

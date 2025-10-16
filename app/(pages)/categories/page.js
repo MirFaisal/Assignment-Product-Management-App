@@ -20,7 +20,6 @@ const CategoriesPage = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
 
   useEffect(() => {
-    // Wait for auth to hydrate before making API calls
     if (hydrated) {
       dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
@@ -28,7 +27,7 @@ const CategoriesPage = () => {
 
   // Debounced search - call API after user stops typing
   useEffect(() => {
-    if (!hydrated) return; // Don't search if not hydrated
+    if (!hydrated) return; 
 
     if (searchTimeout) {
       clearTimeout(searchTimeout);
@@ -37,10 +36,9 @@ const CategoriesPage = () => {
     if (searchInput.trim()) {
       const timeout = setTimeout(() => {
         dispatch(searchCategories(searchInput.trim()));
-      }, 500); // Wait 500ms after user stops typing
+      }, 500); 
       setSearchTimeout(timeout);
     } else {
-      // If search is cleared, reload categories
       dispatch(resetCategories());
       dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }

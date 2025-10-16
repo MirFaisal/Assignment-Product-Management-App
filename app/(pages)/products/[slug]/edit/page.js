@@ -34,7 +34,6 @@ const EditProductPage = () => {
     }
   }, [dispatch, hydrated, slug]);
 
-  // Populate form when product is loaded
   // Prepare initial data for ProductForm
   const initialData = selectedProduct
     ? {
@@ -69,7 +68,6 @@ const EditProductPage = () => {
     }
   };
 
-  // Show loading while auth is hydrating or fetching product
   if (!hydrated || (loading && !selectedProduct)) {
     return (
       <DashboardLayout>
@@ -80,7 +78,6 @@ const EditProductPage = () => {
     );
   }
 
-  // Show error if product fetch failed
   if (error) {
     return (
       <DashboardLayout>
@@ -94,7 +91,6 @@ const EditProductPage = () => {
     );
   }
 
-  // Show not found if product doesn't exist
   if (!selectedProduct) {
     return (
       <DashboardLayout>

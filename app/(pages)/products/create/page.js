@@ -38,7 +38,7 @@ const CreateProductPage = () => {
     }
   };
 
-  // Show loading while auth is hydrating
+
   if (!hydrated) {
     return (
       <DashboardLayout>

@@ -27,7 +27,6 @@ export default function LoginPage() {
     const result = await dispatch(userVerify(email));
 
     if (userVerify.fulfilled.match(result)) {
-      // Successfully logged in, will redirect via useEffect
       console.log("Login successful!");
     }
   };
