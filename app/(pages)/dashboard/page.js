@@ -1,17 +1,32 @@
 "use client";
 
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
+import { fetchProducts } from "@/app/store/slices/Product/productsSlice";
+import { fetchCategories } from "@/app/store/slices/Category/categoriesSlice";
+import Link from "next/link";
 
 export default function DashboardPage() {
-  const { email, token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { email, hydrated } = useSelector((state) => state.auth);
+  const { products } = useSelector((state) => state.products);
+  const { categories } = useSelector((state) => state.categories);
+
+  useEffect(() => {
+    // Wait for auth to hydrate before making API calls
+    if (hydrated) {
+      dispatch(fetchProducts({ offset: 0, limit: 50 })); // Fetch more to get accurate count
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, hydrated]);
 
   return (
     <DashboardLayout>
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Welcome back, {email}!</p>
+        <p className="text-gray-600 mt-2">Welcome back, {email || "User"}!</p>
       </div>
       <div className="flex gap-8">
         {/* Stats Grid */}
@@ -20,7 +35,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Products</p>
-                <p className="text-3xl font-bold text-gray-900">0</p>
+                <p className="text-3xl font-bold text-gray-900">{products.length}</p>
               </div>
               <div className="bg-blue-100 rounded-full p-3">
                 <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,7 +54,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Categories</p>
-                <p className="text-3xl font-bold text-gray-900">0</p>
+                <p className="text-3xl font-bold text-gray-900">{categories.length}</p>
               </div>
               <div className="bg-green-100 rounded-full p-3">
                 <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,16 +97,16 @@ export default function DashboardPage() {
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 lg:grid-rows-2 gap-4">
-            <button className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all duration-200">
+            <Link href="/products/create" className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all duration-200">
               <div className="bg-blue-100 rounded-lg p-2">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
               </div>
               <span className="font-medium text-gray-700">Add Product</span>
-            </button>
+            </Link>
 
-            <button className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all duration-200">
+            <Link href="/products" className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all duration-200">
               <div className="bg-green-100 rounded-lg p-2">
                 <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -103,9 +118,9 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <span className="font-medium text-gray-700">View All</span>
-            </button>
+            </Link>
 
-            <button className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all duration-200">
+            <Link href="/products" className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all duration-200">
               <div className="bg-purple-100 rounded-lg p-2">
                 <svg
                   className="w-6 h-6 text-purple-600"
@@ -121,7 +136,7 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <span className="font-medium text-gray-700">Search</span>
-            </button>
+            </Link>
 
             <button className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-all duration-200">
               <div className="bg-orange-100 rounded-lg p-2">
