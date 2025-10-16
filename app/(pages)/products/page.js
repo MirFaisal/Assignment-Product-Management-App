@@ -15,7 +15,9 @@ import { fetchCategories } from "@/app/store/slices/Category/categoriesAPI";
 import LoadingSpinner from "@/app/components/svgs/LoadingSpinner";
 import Link from "next/link";
 
-const ProductsPage = () => {
+import { Suspense } from "react";
+
+function ProductsPageContent() {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -50,7 +52,7 @@ const ProductsPage = () => {
   }, [dispatch, hydrated, categoryIdFromUrl]);
 
   useEffect(() => {
-    if (!hydrated) return; 
+    if (!hydrated) return;
 
     if (searchTimeout) {
       clearTimeout(searchTimeout);
@@ -59,7 +61,7 @@ const ProductsPage = () => {
     if (searchInput.trim()) {
       const timeout = setTimeout(() => {
         dispatch(searchProducts(searchInput.trim()));
-      }, 500); 
+      }, 500);
       setSearchTimeout(timeout);
     } else {
       dispatch(resetProducts());
@@ -81,9 +83,10 @@ const ProductsPage = () => {
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value || null;
     setIsChangingCategory(true);
-    setSearchInput(""); 
+    setSearchInput("");
 
-    const params = new URLSearchParams(window.location.search);
+    // Use useSearchParams for current params
+    const params = new URLSearchParams(searchParams.toString());
     if (categoryId) {
       params.set("categoryId", categoryId);
     } else {
@@ -226,6 +229,17 @@ const ProductsPage = () => {
       </Modal>
     </DashboardLayout>
   );
-};
+}
 
-export default ProductsPage;
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center py-20">
+          <LoadingSpinner size="lg" />
+        </div>
+      }>
+      <ProductsPageContent />
+    </Suspense>
+  );
+}
