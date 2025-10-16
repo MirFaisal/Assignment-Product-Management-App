@@ -31,16 +31,37 @@ export const fetchProducts = createAsyncThunk(
 );
 
 /**
- * Async thunk to fetch single product by ID
+ * Async thunk to fetch single product by ID or slug
  */
 export const fetchProductById = createAsyncThunk(
   "products/fetchProductById",
-  async (id, { getState, rejectWithValue }) => {
+  async (idOrSlug, { getState, rejectWithValue }) => {
     try {
       const { auth } = getState();
       const token = auth.token;
 
-      const response = await apiService.get(`/products/${id}`, token);
+      const response = await apiService.get(`/products/${idOrSlug}`, token);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+/**
+ * Async thunk to search products by name
+ */
+export const searchProducts = createAsyncThunk(
+  "products/searchProducts",
+  async (searchText, { getState, rejectWithValue }) => {
+    try {
+      const { auth } = getState();
+      const token = auth.token;
+
+      const response = await apiService.get(
+        `/products/search?searchedText=${encodeURIComponent(searchText)}`,
+        token,
+      );
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -226,6 +247,21 @@ const productsSlice = createSlice({
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to delete product";
+      })
+
+      // Search Products
+      .addCase(searchProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+        state.pagination.hasMore = false; // Search results don't support pagination
+      })
+      .addCase(searchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to search products";
       });
   },
 });

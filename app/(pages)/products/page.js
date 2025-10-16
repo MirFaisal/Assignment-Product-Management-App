@@ -1,12 +1,12 @@
 "use client";
 
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProducts,
+  searchProducts,
   deleteProduct,
-  setSearchQuery,
   setCategoryFilter,
   resetProducts,
 } from "@/app/store/slices/Product/productsSlice";
@@ -23,6 +23,7 @@ const ProductsPage = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
   const [searchInput, setSearchInput] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState(null);
 
   useEffect(() => {
     // Wait for auth to hydrate before making API calls
@@ -32,13 +33,29 @@ const ProductsPage = () => {
     }
   }, [dispatch, hydrated]);
 
-  // Real-time search filter (client-side)
-  const filteredProducts = useMemo(() => {
-    if (!searchInput.trim()) return products;
+  // Debounced search - call API after user stops typing
+  useEffect(() => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
 
-    const query = searchInput.toLowerCase();
-    return products.filter((product) => product.name.toLowerCase().includes(query));
-  }, [products, searchInput]);
+    if (searchInput.trim()) {
+      const timeout = setTimeout(() => {
+        dispatch(searchProducts(searchInput.trim()));
+      }, 500); // Wait 500ms after user stops typing
+      setSearchTimeout(timeout);
+    } else {
+      // If search is cleared, reload products
+      dispatch(resetProducts());
+      dispatch(fetchProducts({ offset: 0, limit: 10, categoryId: filters.categoryId }));
+    }
+
+    return () => {
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+    };
+  }, [searchInput]);
 
   const handleSearch = (e) => {
     setSearchInput(e.target.value);
@@ -48,6 +65,7 @@ const ProductsPage = () => {
     const categoryId = e.target.value || null;
     dispatch(setCategoryFilter(categoryId));
     dispatch(resetProducts());
+    setSearchInput(""); // Clear search when changing category
     dispatch(fetchProducts({ offset: 0, limit: 10, categoryId }));
   };
 
@@ -146,7 +164,7 @@ const ProductsPage = () => {
         ) : (
           <>
             {/* Products Grid */}
-            {filteredProducts.length === 0 ? (
+            {products.length === 0 ? (
               <div className="text-center py-20">
                 <p className="text-gray-500 text-lg">
                   {searchInput.trim() ? "No products found matching your search." : "No products available."}
@@ -154,7 +172,7 @@ const ProductsPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
+                {products.map((product) => (
                   <div
                     key={product.id}
                     className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
@@ -189,12 +207,12 @@ const ProductsPage = () => {
                       {/* Action Buttons */}
                       <div className="flex gap-2">
                         <Link
-                          href={`/products/${product.id}`}
+                          href={`/products/${product.slug}`}
                           className="flex-1 px-3 py-2 text-sm text-center bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors">
                           View
                         </Link>
                         <Link
-                          href={`/products/${product.id}/edit`}
+                          href={`/products/${product.slug}/edit`}
                           className="flex-1 px-3 py-2 text-sm text-center bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition-colors">
                           Edit
                         </Link>
