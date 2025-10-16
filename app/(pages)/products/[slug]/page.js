@@ -55,7 +55,6 @@ const ProductDetailPage = () => {
     );
   }
 
-
   if (error) {
     return (
       <DashboardLayout>
@@ -113,11 +112,11 @@ const ProductDetailPage = () => {
 
               {/* Additional Images */}
               {selectedProduct.images && selectedProduct.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-2 mt-4">
+                <div className="flex gap-x-2 mt-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300">
                   {selectedProduct.images.slice(1).map((image, index) => (
                     <div
                       key={index}
-                      className="relative aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                      className="relative min-w-[72px] h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
                       <img
                         src={image}
                         alt={`${selectedProduct.name} ${index + 2}`}

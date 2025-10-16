@@ -29,7 +29,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (hydrated) {
-      dispatch(fetchProducts({ offset: 0, limit: 50 }));
+      dispatch(fetchProducts({ offset: 0, limit: 1000 }));
       dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
   }, [dispatch, hydrated]);
@@ -50,7 +50,6 @@ export default function DashboardPage() {
 
     const topCategories = Object.entries(categoryStats)
       .sort(([, a], [, b]) => b - a)
-      .slice(0, 3);
 
     return {
       totalProducts: products.length,
@@ -181,18 +180,6 @@ export default function DashboardPage() {
                   <p className="text-xs text-gray-600">Manage categories</p>
                 </div>
               </Link>
-
-              <div className="pt-3 border-t border-gray-200">
-                <button className="w-full flex items-center gap-3 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group">
-                  <div className="bg-gray-500 text-white rounded-lg p-2 group-hover:bg-gray-600">
-                    <SettingsIcon />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900">Settings</p>
-                    <p className="text-xs text-gray-600">App preferences</p>
-                  </div>
-                </button>
-              </div>
             </div>
           </div>
         </div>
