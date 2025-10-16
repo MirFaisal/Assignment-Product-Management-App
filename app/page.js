@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center">
+      <div className="text-center flex flex-col justify-center items-center">
         <LoadingSpinner size="xl" color="blue" />
         <p className="text-gray-600 mt-4">Redirecting...</p>
       </div>
