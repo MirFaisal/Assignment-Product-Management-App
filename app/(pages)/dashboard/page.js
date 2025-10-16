@@ -14,7 +14,6 @@ import DistributionIcon from "@/app/components/svgs/DistributionIcon";
 import AddProductIcon from "@/app/components/svgs/AddProductIcon";
 import AllProductsIcon from "@/app/components/svgs/AllProductsIcon";
 import CategoriesIcon from "@/app/components/svgs/CategoriesIcon";
-import SettingsIcon from "@/app/components/svgs/SettingsIcon";
 import EmptyProductIcon from "@/app/components/svgs/EmptyProductIcon";
 import PlusIcon from "@/app/components/svgs/PlusIcon";
 import { fetchProducts } from "@/app/store/slices/Product/productsAPI";

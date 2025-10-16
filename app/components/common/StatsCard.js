@@ -42,18 +42,20 @@ export default function StatsCard({ title, value, color = "gray", icon, note }) 
   const colors = colorMap[color] || colorMap["gray"];
   const isLoading = value === undefined || value === null || value === "...";
   return (
-    <div className={`rounded-xl p-6 ${colors.bg}`}>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className={`text-sm font-medium ${colors.text}`}>{title}</p>
+    <div className={`rounded-xl p-4 sm:p-6 ${colors.bg}`}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+        <div className="flex-1">
+          <p className={`text-base sm:text-sm font-medium ${colors.text}`}>{title}</p>
           {isLoading ? (
-            <Skeleton className="h-8 w-20 mt-1 mb-1" />
+            <Skeleton className="h-8 w-24 sm:w-20 mt-2 mb-2" />
           ) : (
-            <p className={`text-3xl font-bold mt-1 ${colors.value}`}>{value}</p>
+            <p className={`text-2xl sm:text-3xl font-bold mt-2 sm:mt-1 ${colors.value}`}>{value}</p>
           )}
           {note && !isLoading && <p className={`text-xs mt-2 ${colors.note}`}>{note}</p>}
         </div>
-        <div className={`rounded-full p-3 ${colors.iconBg}`}>{icon}</div>
+        <div className={`self-start sm:self-auto rounded-full block lg:hidden p-3 ${colors.iconBg}`}>
+          {icon}
+        </div>
       </div>
     </div>
   );
