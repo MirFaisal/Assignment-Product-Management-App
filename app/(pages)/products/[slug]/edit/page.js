@@ -39,7 +39,7 @@ const EditProductPage = () => {
     dispatch(clearSelectedProduct());
 
     if (hydrated) {
-      dispatch(fetchCategories());
+      dispatch(fetchCategories({ offset: 0, limit: 50 }));
       if (slug) {
         dispatch(fetchProductById(slug));
       }

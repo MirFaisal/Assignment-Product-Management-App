@@ -17,7 +17,7 @@ export default function DashboardPage() {
     // Wait for auth to hydrate before making API calls
     if (hydrated) {
       dispatch(fetchProducts({ offset: 0, limit: 50 })); // Fetch more to get accurate count
-      dispatch(fetchCategories());
+      dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
   }, [dispatch, hydrated]);
 

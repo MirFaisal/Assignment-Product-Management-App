@@ -46,6 +46,8 @@ const ProductsPage = () => {
 
   // Debounced search - call API after user stops typing
   useEffect(() => {
+    if (!hydrated) return; // Don't search if not hydrated
+
     if (searchTimeout) {
       clearTimeout(searchTimeout);
     }
@@ -66,7 +68,7 @@ const ProductsPage = () => {
         clearTimeout(searchTimeout);
       }
     };
-  }, [searchInput]);
+  }, [searchInput, hydrated]);
 
   const handleSearch = (e) => {
     setSearchInput(e.target.value);

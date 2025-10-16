@@ -30,7 +30,7 @@ const CreateProductPage = () => {
 
   useEffect(() => {
     if (hydrated) {
-      dispatch(fetchCategories());
+      dispatch(fetchCategories({ offset: 0, limit: 50 }));
     }
   }, [dispatch, hydrated]);
 
