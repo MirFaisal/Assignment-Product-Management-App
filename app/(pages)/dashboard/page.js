@@ -6,6 +6,17 @@ import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
 import DashboardHeader from "@/app/components/common/DashboardHeader";
 import StatsCard from "@/app/components/common/StatsCard";
 import RecentProductCard from "@/app/components/common/RecentProductCard";
+import ProductIcon from "@/app/components/svgs/ProductIcon";
+import CategoryIcon from "@/app/components/svgs/CategoryIcon";
+import PriceIcon from "@/app/components/svgs/PriceIcon";
+import StatusIcon from "@/app/components/svgs/StatusIcon";
+import DistributionIcon from "@/app/components/svgs/DistributionIcon";
+import AddProductIcon from "@/app/components/svgs/AddProductIcon";
+import AllProductsIcon from "@/app/components/svgs/AllProductsIcon";
+import CategoriesIcon from "@/app/components/svgs/CategoriesIcon";
+import SettingsIcon from "@/app/components/svgs/SettingsIcon";
+import EmptyProductIcon from "@/app/components/svgs/EmptyProductIcon";
+import PlusIcon from "@/app/components/svgs/PlusIcon";
 import { fetchProducts } from "@/app/store/slices/Product/productsAPI";
 import { fetchCategories } from "@/app/store/slices/Category/categoriesAPI";
 import Link from "next/link";
@@ -66,64 +77,28 @@ export default function DashboardPage() {
             value={productsLoading ? "..." : dashboardStats.totalProducts}
             color="blue"
             note="↗ 12% from last month"
-            icon={
-              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                />
-              </svg>
-            }
+            icon={<ProductIcon />}
           />
           <StatsCard
             title="Categories"
             value={categoriesLoading ? "..." : dashboardStats.totalCategories}
             color="green"
             note="↗ 5% growth"
-            icon={
-              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                />
-              </svg>
-            }
+            icon={<CategoryIcon />}
           />
           <StatsCard
             title="Avg. Price"
             value={`$${productsLoading ? "..." : dashboardStats.avgPrice}`}
             color="purple"
             note="↘ 3% decrease"
-            icon={
-              <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                />
-              </svg>
-            }
+            icon={<PriceIcon />}
           />
           <StatsCard
             title="System Status"
             value={<span className="text-2xl font-bold text-orange-900 mt-1">Healthy</span>}
             color="orange"
             note="All systems operational"
-            icon={
-              <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            }
+            icon={<StatusIcon />}
           />
         </div>
 
@@ -161,18 +136,7 @@ export default function DashboardPage() {
                 ))
               ) : (
                 <div className="text-center py-8 text-gray-500">
-                  <svg
-                    className="w-16 h-16 mx-auto mb-4 text-gray-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
+                  <DistributionIcon />
                   <p>No data available</p>
                   <p className="text-xs mt-1">Add some products to see distribution</p>
                 </div>
@@ -188,9 +152,7 @@ export default function DashboardPage() {
                 href="/products/create"
                 className="w-full flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors group">
                 <div className="bg-blue-500 text-white rounded-lg p-2 group-hover:bg-blue-600">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
+                  <AddProductIcon />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Add Product</p>
@@ -202,14 +164,7 @@ export default function DashboardPage() {
                 href="/products"
                 className="w-full flex items-center gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors group">
                 <div className="bg-green-500 text-white rounded-lg p-2 group-hover:bg-green-600">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
+                  <AllProductsIcon />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">All Products</p>
@@ -221,14 +176,7 @@ export default function DashboardPage() {
                 href="/categories"
                 className="w-full flex items-center gap-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors group">
                 <div className="bg-purple-500 text-white rounded-lg p-2 group-hover:bg-purple-600">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                    />
-                  </svg>
+                  <CategoriesIcon />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">Categories</p>
@@ -239,20 +187,7 @@ export default function DashboardPage() {
               <div className="pt-3 border-t border-gray-200">
                 <button className="w-full flex items-center gap-3 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group">
                   <div className="bg-gray-500 text-white rounded-lg p-2 group-hover:bg-gray-600">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
+                    <SettingsIcon />
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">Settings</p>
@@ -281,26 +216,13 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="text-center py-12 text-gray-500">
-              <svg
-                className="w-16 h-16 mx-auto mb-4 text-gray-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                />
-              </svg>
+              <EmptyProductIcon />
               <p className="text-lg font-medium mb-2">No products yet</p>
               <p className="mb-4">Get started by adding your first product</p>
               <Link
                 href="/products/create"
                 className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
+                <PlusIcon />
                 Add Product
               </Link>
             </div>

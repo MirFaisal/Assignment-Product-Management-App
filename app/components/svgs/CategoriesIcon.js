@@ -1,8 +1,11 @@
-import React from "react";
-
-export default function CategoryIcon({ className = "w-8 h-8 text-green-600", ...props }) {
+export default function CategoriesIcon(props) {
   return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" {...props}>
+    <svg
+      className={props.className || "w-5 h-5"}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      {...props}>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
