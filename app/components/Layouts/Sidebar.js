@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
 import { logout } from "@/app/store/slices/Auth/authSlice";
 import Link from "next/link";
@@ -146,11 +145,8 @@ export default function Sidebar() {
         {/* User Section at Bottom */}
         <div className="border-t border-gray-200 p-4">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold">
-              {email?.charAt(0).toUpperCase()}
-            </div>
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold"></div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{email}</p>
               <p className="text-xs text-gray-500">Administrator</p>
             </div>
           </div>
