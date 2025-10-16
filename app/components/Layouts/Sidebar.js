@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
 import { logout } from "@/app/store/slices/Auth/authSlice";
 import Link from "next/link";
 
 export default function Sidebar() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

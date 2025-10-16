@@ -4,7 +4,7 @@ import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { createProduct } from "@/app/store/slices/Product/productsSlice";
+import { createProduct } from "@/app/store/slices/Product/productsAPI";
 import { fetchCategories } from "@/app/store/slices/Category/categoriesAPI";
 import LoadingSpinner from "@/app/components/svgs/LoadingSpinner";
 import Link from "next/link";

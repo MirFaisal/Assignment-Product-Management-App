@@ -4,13 +4,8 @@ import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  fetchProducts,
-  searchProducts,
-  deleteProduct,
-  setCategoryFilter,
-  resetProducts,
-} from "@/app/store/slices/Product/productsSlice";
+import { fetchProducts, searchProducts, deleteProduct } from "@/app/store/slices/Product/productsAPI";
+import { setCategoryFilter, resetProducts } from "@/app/store/slices/Product/productsSlice";
 import { fetchCategories } from "@/app/store/slices/Category/categoriesAPI";
 import LoadingSpinner from "@/app/components/svgs/LoadingSpinner";
 import Link from "next/link";

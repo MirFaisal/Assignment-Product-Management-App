@@ -4,11 +4,8 @@ import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useRouter } from "next/navigation";
-import {
-  fetchProductById,
-  deleteProduct,
-  clearSelectedProduct,
-} from "@/app/store/slices/Product/productsSlice";
+import { fetchProductById, deleteProduct } from "@/app/store/slices/Product/productsAPI";
+import { clearSelectedProduct } from "@/app/store/slices/Product/productsSlice";
 import LoadingSpinner from "@/app/components/svgs/LoadingSpinner";
 import Link from "next/link";
 

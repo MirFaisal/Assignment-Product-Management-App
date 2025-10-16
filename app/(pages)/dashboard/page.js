@@ -3,7 +3,7 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
-import { fetchProducts } from "@/app/store/slices/Product/productsSlice";
+import { fetchProducts } from "@/app/store/slices/Product/productsAPI";
 import { fetchCategories } from "@/app/store/slices/Category/categoriesAPI";
 import Link from "next/link";
 
