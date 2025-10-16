@@ -3,6 +3,9 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DashboardLayout from "@/app/components/Layouts/DashboardLayout";
+import DashboardHeader from "@/app/components/common/DashboardHeader";
+import StatsCard from "@/app/components/common/StatsCard";
+import RecentProductCard from "@/app/components/common/RecentProductCard";
 import { fetchProducts } from "@/app/store/slices/Product/productsAPI";
 import { fetchCategories } from "@/app/store/slices/Category/categoriesAPI";
 import Link from "next/link";
@@ -54,122 +57,74 @@ export default function DashboardPage() {
     <DashboardLayout>
       <div className="space-y-8">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600 mt-2">Welcome back, {email || "User"}! Here's your overview.</p>
-          </div>
-          <div className="mt-4 sm:mt-0">
-            <div className="flex items-center space-x-2 text-sm text-gray-500">
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
-                Online
-              </div>
-              <span>•</span>
-              <span>{new Date().toLocaleDateString()}</span>
-            </div>
-          </div>
-        </div>
+        <DashboardHeader email={email} />
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Total Products */}
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-blue-600">Total Products</p>
-                <p className="text-3xl font-bold text-blue-900 mt-1">
-                  {productsLoading ? "..." : dashboardStats.totalProducts}
-                </p>
-                <p className="text-xs text-blue-600 mt-2">↗ 12% from last month</p>
-              </div>
-              <div className="bg-blue-200 rounded-full p-3">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Total Categories */}
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-green-600">Categories</p>
-                <p className="text-3xl font-bold text-green-900 mt-1">
-                  {categoriesLoading ? "..." : dashboardStats.totalCategories}
-                </p>
-                <p className="text-xs text-green-600 mt-2">↗ 5% growth</p>
-              </div>
-              <div className="bg-green-200 rounded-full p-3">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Average Price */}
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-purple-600">Avg. Price</p>
-                <p className="text-3xl font-bold text-purple-900 mt-1">
-                  ${productsLoading ? "..." : dashboardStats.avgPrice}
-                </p>
-                <p className="text-xs text-purple-600 mt-2">↘ 3% decrease</p>
-              </div>
-              <div className="bg-purple-200 rounded-full p-3">
-                <svg
-                  className="w-8 h-8 text-purple-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Status */}
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-orange-600">System Status</p>
-                <p className="text-2xl font-bold text-orange-900 mt-1">Healthy</p>
-                <p className="text-xs text-orange-600 mt-2">All systems operational</p>
-              </div>
-              <div className="bg-orange-200 rounded-full p-3">
-                <svg
-                  className="w-8 h-8 text-orange-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+          <StatsCard
+            title="Total Products"
+            value={productsLoading ? "..." : dashboardStats.totalProducts}
+            color="blue"
+            note="↗ 12% from last month"
+            icon={
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                />
+              </svg>
+            }
+          />
+          <StatsCard
+            title="Categories"
+            value={categoriesLoading ? "..." : dashboardStats.totalCategories}
+            color="green"
+            note="↗ 5% growth"
+            icon={
+              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                />
+              </svg>
+            }
+          />
+          <StatsCard
+            title="Avg. Price"
+            value={`$${productsLoading ? "..." : dashboardStats.avgPrice}`}
+            color="purple"
+            note="↘ 3% decrease"
+            icon={
+              <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                />
+              </svg>
+            }
+          />
+          <StatsCard
+            title="System Status"
+            value={<span className="text-2xl font-bold text-orange-900 mt-1">Healthy</span>}
+            color="orange"
+            note="All systems operational"
+            icon={
+              <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            }
+          />
         </div>
 
         {/* Main Content Grid */}
@@ -321,34 +276,7 @@ export default function DashboardPage() {
           {dashboardStats.recentProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {dashboardStats.recentProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.slug}`}
-                  className="group block bg-gray-50 hover:bg-gray-100 rounded-lg p-4 transition-colors">
-                  <div className="aspect-square bg-gray-200 rounded-lg mb-3 overflow-hidden">
-                    {product.images && product.images[0] ? (
-                      <img
-                        src={product.images[0]}
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <h4 className="font-medium text-gray-900 text-sm truncate">{product.name}</h4>
-                  <p className="text-blue-600 font-semibold text-sm">${product.price}</p>
-                  <p className="text-xs text-gray-500">{product.category?.name || "No category"}</p>
-                </Link>
+                <RecentProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
