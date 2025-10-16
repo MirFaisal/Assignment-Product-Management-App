@@ -44,7 +44,7 @@ const ProductsPage = () => {
       // Set category filter from URL
       dispatch(setCategoryFilter(categoryId));
       dispatch(resetProducts());
-      dispatch(fetchProducts({ offset: 0, limit: 10, categoryId }));
+      dispatch(fetchProducts({ offset: 0, limit: 12, categoryId }));
       setIsChangingCategory(false);
     }
   }, [dispatch, hydrated, categoryIdFromUrl]);
@@ -64,7 +64,7 @@ const ProductsPage = () => {
     } else {
       dispatch(resetProducts());
       const categoryId = categoryIdFromUrl;
-      dispatch(fetchProducts({ offset: 0, limit: 10, categoryId }));
+      dispatch(fetchProducts({ offset: 0, limit: 12, categoryId }));
     }
 
     return () => {
