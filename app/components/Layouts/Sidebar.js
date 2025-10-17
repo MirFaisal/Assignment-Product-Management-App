@@ -1,22 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
 import { logout } from "@/app/store/slices/Auth/authSlice";
 
-import DashboardIcon from "@/app/components/svgs/DashboardIcon";
-import EmptyProductIcon from "@/app/components/svgs/EmptyProductIcon";
-import PlusIcon from "@/app/components/svgs/PlusIcon";
-import CategoriesIcon from "@/app/components/svgs/CategoriesIcon";
 import HamburgerIcon from "@/app/components/svgs/HamburgerIcon";
 import LogoutIcon from "@/app/components/svgs/LogoutIcon";
 import Link from "next/link";
+import { menuItems } from "./data/menuItem";
 
 export default function Sidebar() {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
+  const { email } = useSelector((state) => state.auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleLogout = () => {
@@ -31,29 +29,6 @@ export default function Sidebar() {
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
-
-  const menuItems = [
-    {
-      name: "Dashboard",
-      icon: <DashboardIcon className="w-5 h-5" />,
-      href: "/dashboard",
-    },
-    {
-      name: "Products",
-      icon: <EmptyProductIcon className="w-5 h-5" />,
-      href: "/products",
-    },
-    {
-      name: "Add Product",
-      icon: <PlusIcon className="w-5 h-5" />,
-      href: "/products/create",
-    },
-    {
-      name: "Categories",
-      icon: <CategoriesIcon className="w-5 h-5" />,
-      href: "/categories",
-    },
-  ];
 
   return (
     <>
@@ -107,9 +82,12 @@ export default function Sidebar() {
         {/* User Section at Bottom */}
         <div className="border-t border-gray-200 p-4">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold"></div>
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold uppercase">
+              {email.slice(0, 1)}
+            </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500">Administrator</p>
+              <p>Administrator</p>
+              <p className="text-xs text-gray-500">{email}</p>
             </div>
           </div>
           <button

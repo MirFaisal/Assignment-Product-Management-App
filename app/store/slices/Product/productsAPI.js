@@ -4,7 +4,7 @@ import apiService from "@/app/services/api";
 // Fetch products with pagination and category filter
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async ({ offset = 0, limit = 10, categoryId = null }, { getState, rejectWithValue }) => {
+  async ({ offset = 0, limit = 12, categoryId = null }, { getState, rejectWithValue }) => {
     try {
       const { auth } = getState();
       const token = auth.token;

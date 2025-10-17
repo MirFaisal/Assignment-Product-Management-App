@@ -8,22 +8,31 @@ const getTokenFromStorage = () => {
   }
   return null;
 };
+const getEmailFromStorage = () => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("auth_email");
+  }
+  return null;
+};
 
 const saveToStorage = (token, email) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("auth_token", token);
+    localStorage.setItem("auth_email", email);
   }
 };
 
 const clearStorage = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_email");
   }
 };
 
 // Initial state without localStorage (to avoid hydration errors)
 const initialState = {
   token: null,
+  email: null,
   isAuthenticated: false,
   loading: false,
   error: null,
@@ -45,14 +54,17 @@ const authSlice = createSlice({
   reducers: {
     hydrateAuth: (state) => {
       const token = getTokenFromStorage();
+      const email = getEmailFromStorage();
       if (token) {
         state.token = token;
+        state.email = email;
         state.isAuthenticated = true;
       }
       state.hydrated = true;
     },
     logout: (state) => {
       state.token = null;
+      state.email = null;
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
@@ -72,6 +84,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         state.token = action.payload.token;
+        state.email = action.payload.email;
         state.error = null;
         state.hydrated = true;
         saveToStorage(action.payload.token, action.payload.email);
