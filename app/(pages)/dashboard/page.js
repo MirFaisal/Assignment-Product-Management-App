@@ -47,8 +47,7 @@ export default function DashboardPage() {
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .slice(0, 5);
 
-    const topCategories = Object.entries(categoryStats)
-      .sort(([, a], [, b]) => b - a)
+    const topCategories = Object.entries(categoryStats).sort(([, a], [, b]) => b - a);
 
     return {
       totalProducts: products.length,
@@ -67,7 +66,7 @@ export default function DashboardPage() {
         <DashboardHeader email={email} />
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
           <StatsCard
             title="Total Products"
             value={productsLoading ? "..." : dashboardStats.totalProducts}
@@ -99,7 +98,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 xl:gap-8">
           {/* Category Distribution Chart */}
           <div className="lg:col-span-2 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">

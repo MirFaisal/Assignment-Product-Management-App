@@ -43,7 +43,7 @@ export default function StatsCard({ title, value, color = "gray", icon, note }) 
   const isLoading = value === undefined || value === null || value === "...";
   return (
     <div className={`rounded-xl p-4 sm:p-6 ${colors.bg}`}>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+      <div className="flex sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
         <div className="flex-1">
           <p className={`text-base sm:text-sm font-medium ${colors.text}`}>{title}</p>
           {isLoading ? (
@@ -53,7 +53,7 @@ export default function StatsCard({ title, value, color = "gray", icon, note }) 
           )}
           {note && !isLoading && <p className={`text-xs mt-2 ${colors.note}`}>{note}</p>}
         </div>
-        <div className={`self-start sm:self-auto rounded-full block lg:hidden p-3 ${colors.iconBg}`}>
+        <div className={`self-start sm:self-auto rounded-full block md:hidden p-3 ${colors.iconBg}`}>
           {icon}
         </div>
       </div>
