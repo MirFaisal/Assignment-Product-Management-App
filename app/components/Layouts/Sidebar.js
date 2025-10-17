@@ -9,6 +9,7 @@ import HamburgerIcon from "@/app/components/svgs/HamburgerIcon";
 import LogoutIcon from "@/app/components/svgs/LogoutIcon";
 import Link from "next/link";
 import { menuItems } from "./data/menuItem";
+import Skeleton from "../common/Skeleton";
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -83,11 +84,11 @@ export default function Sidebar() {
         <div className="border-t border-gray-200 p-4">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold uppercase">
-              {email.slice(0, 1)}
+              {email ? email.slice(0, 1) : "..."}
             </div>
             <div className="flex-1 min-w-0">
               <p>Administrator</p>
-              <p className="text-xs text-gray-500">{email}</p>
+              <p className="text-xs text-gray-500">{email ? email : <Skeleton />}</p>
             </div>
           </div>
           <button
