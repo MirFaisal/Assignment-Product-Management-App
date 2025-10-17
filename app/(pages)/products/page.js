@@ -33,6 +33,8 @@ function ProductsPageContent() {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [isChangingCategory, setIsChangingCategory] = useState(false);
 
+  const [viewMode, setViewMode] = useState("grid");
+
   useEffect(() => {
     if (hydrated) {
       dispatch(fetchCategories({ offset: 0, limit: 50 }));
